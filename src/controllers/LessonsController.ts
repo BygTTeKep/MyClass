@@ -11,20 +11,31 @@ export class LessonsController {
     }
     async findLessonsByFilter(req: Request, res: Response) {
         const query = req.query;
-        const { error, value } = lessonsFilterSchema.validate(query);
+        const { error } = lessonsFilterSchema.validate(query);
         if (error) {
             res.status(400).json({ error: error.details[0].message });
             return;
         }
-        console.log(value);
+        const dateParts = query?.date?.toString().split(',');
+        const studentsCountParts = query?.studentsCount?.toString().split(',');
+        const date = { dateFrom: dateParts?.[0], dateTo: dateParts?.[1] };
+        const studentsCount =
+            studentsCountParts && studentsCountParts?.length > 1
+                ? ([
+                      Number(studentsCountParts?.[0]),
+                      Number(studentsCountParts?.[1]),
+                  ] as [number, number])
+                : Number(studentsCountParts?.[0]);
         const convertParamseToFilter: Filter = {
-            dateFrom: value.date.dateFrom,
-            dateTo: value.date.dateTo,
-            page: Number(value.page) ?? 1,
-            lessonsPerPage: Number(value.lessonsPerPage) ?? 5,
-            teacherIds: value.teacherIds,
-            status: value.status,
-            studentsCount: value.studentsCount,
+            dateFrom: date.dateFrom,
+            dateTo: date.dateTo,
+            page: query.page ? Number(query.page) : 1,
+            lessonsPerPage: query.lessonsPerPage
+                ? Number(query.lessonsPerPage)
+                : 5,
+            teacherIds: query.teacherIds?.toString() ?? '',
+            status: query.status ? Number(query.status) : undefined,
+            studentsCount: studentsCount,
         };
         const find = await this.services.findLessonsByFilter(
             convertParamseToFilter

@@ -7,17 +7,19 @@ services:
             - ./init/test.sql:/docker-entrypoint-initdb.d/test.sql
         networks:
             - myclass-network
+        ports:
+            - '5433:5432'
         environment:
             - POSTGRES_PASSWORD=${DB_PASS}
             - POSTGRES_USER=${DB_USERNAME}
-    myclass-back:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        ports:
-            - '${APP_PORT}:${APP_PORT}'
-        networks:
-            - myclass-network
+    # myclass-back:
+    #     build:
+    #         context: .
+    #         dockerfile: Dockerfile
+    #     ports:
+    #         - '${APP_PORT}:${APP_PORT}'
+    #     networks:
+    #         - myclass-network
 
 networks:
     myclass-network:

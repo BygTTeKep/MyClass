@@ -1,9 +1,8 @@
-import { literal, Literal, Op, sql } from '@sequelize/core';
+import { Op } from '@sequelize/core';
 import { LessonsModel } from '../models/Lessons.model';
 import { Students } from '../models/Students.model';
 import { TeachersModel } from '../models/Teachers.model';
 import { sequelize } from '../libs/db';
-import { attribute } from '@sequelize/core/lib/expression-builders/attribute';
 
 export type Filter = {
     dateFrom?: string;
@@ -82,13 +81,14 @@ export class LessonsRepository {
                 'students->LessonStudents.visit',
                 'teachers.id',
             ];
-            queryOptions.having = sequelize.where(
-                sequelize.fn(
-                    'COUNT',
-                    sequelize.col('students->LessonStudents.student_id')
-                ),
-                studentCountCondition
-            );
+            if (filter.studentsCount)
+                queryOptions.having = sequelize.where(
+                    sequelize.fn(
+                        'COUNT',
+                        sequelize.col('students->LessonStudents.student_id')
+                    ),
+                    studentCountCondition
+                );
         }
         const find = await this.lessons.findAll(queryOptions);
         const enriched = await Promise.all(

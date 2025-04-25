@@ -11,17 +11,7 @@ const db_user = process.env.DB_USERNAME;
 const db_port = process.env.DB_PORT;
 const db_host = process.env.DB_HOST;
 const db_pass = process.env.DB_PASS;
-console.log(
-    db_host,
-    '\n',
-    db_name,
-    '\n',
-    db_pass,
-    '\n',
-    db_port,
-    '\n',
-    db_user
-);
+
 export const sequelize = new Sequelize({
     database: db_name,
     dialect: 'postgres',

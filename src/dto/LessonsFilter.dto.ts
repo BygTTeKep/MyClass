@@ -1,30 +1,18 @@
 import Joi from 'joi';
 
 const dateSchema = Joi.string()
-    .required()
     .pattern(/^\d{4}-\d{2}-\d{2}(,\d{4}-\d{2}-\d{2})?$/)
     .messages({
         'string.pattern.base':
             'date должна быть формата: YYYY-MM-DD или YYYY-MM-DD,YYYY-MM-DD',
-    })
-    .custom((value) => {
-        const parts = value.split(',');
-        return parts.length === 1
-            ? { dateFrom: parts[0] }
-            : { dateFrom: parts[0], dateTo: parts[1] };
     });
 
-const statusSchema = Joi.number()
-    .required()
-    .valid(0, 1)
-    .messages({
-        'number.base': 'status должен быть числом',
-        'number.valid': 'status должен быть 0 или 1',
-    })
-    .custom((value) => value);
+const statusSchema = Joi.number().valid(0, 1).messages({
+    'number.base': 'status должен быть числом',
+    'number.valid': 'status должен быть 0 или 1',
+});
 
 const teacherIdsSchema = Joi.string()
-    .required()
     .pattern(/^\d+(,\d+)*$/)
     .messages({
         'string.pattern.base':
@@ -32,15 +20,10 @@ const teacherIdsSchema = Joi.string()
     });
 
 const studentsCountSchema = Joi.string()
-    .required()
     .pattern(/^\d+(,\d+)?$/)
     .messages({
         'string.pattern.base':
             'studentsCount должно быть числом или два числа разбитых запятой',
-    })
-    .custom((value) => {
-        const parts = value.split(',');
-        return parts.length === 1 ? +parts[0] : [+parts[0], +parts[1]];
     });
 
 const pageSchema = Joi.number().integer().min(1).default(1).messages({
