@@ -6,7 +6,7 @@ import {
     Table,
 } from 'sequelize-typescript';
 import { LessonsModel } from './Lessons.model';
-import { LessonTeacher } from './LessonTeachers.model.';
+import { LessonTeacher } from './LessonTeachers.model';
 
 @Table({
     tableName: 'teachers',

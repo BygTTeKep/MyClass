@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import { LessonTeacher } from '../models/LessonTeachers.model.';
+import { LessonTeacher } from '../models/LessonTeachers.model';
 import { Students } from '../models/Students.model';
 import { TeachersModel } from '../models/Teachers.model';
 import { LessonsModel } from '../models/Lessons.model';
@@ -11,6 +11,10 @@ const db_user = process.env.DB_USERNAME;
 const db_port = process.env.DB_PORT;
 const db_host = process.env.DB_HOST;
 const db_pass = process.env.DB_PASS;
+
+if (!db_host || !db_name || !db_pass || !db_port || !db_user) {
+    throw new Error('Не заполнены переменные окружения для подключения к БД');
+}
 
 export const sequelize = new Sequelize({
     database: db_name,

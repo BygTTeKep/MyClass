@@ -5,13 +5,11 @@ import {
     HasMany,
     Model,
     Table,
-    Sequelize,
 } from 'sequelize-typescript';
 import { TeachersModel } from './Teachers.model';
 import { Students } from './Students.model';
 import { LessonStudents } from './LessonStudents.model';
-import { LessonTeacher } from './LessonTeachers.model.';
-import { BelongsToManyGetAssociationsMixinOptions } from '@sequelize/core';
+import { LessonTeacher } from './LessonTeachers.model';
 
 @Table({ tableName: 'lessons', modelName: 'LessonsModel', timestamps: false })
 export class LessonsModel extends Model {
